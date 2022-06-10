@@ -1,5 +1,7 @@
+import java.text.DecimalFormat;
+
 public class FootballTeam {
-    private String name;
+    private final String name;
 
     private int wins;
     private int losses;
@@ -72,17 +74,26 @@ public class FootballTeam {
         return this.goalsFor - this.goalsAgainst;
     }
 
+    public double getWinRate(int rounds) {
+        if (rounds == 0) {
+            return 0;
+        }
+        return (double) wins * 100 / rounds;
+    }
+
     public static String tableHeader() {
         return String.format("%-20s", "Time") +
                 String.format("%-5s", "V") +
                 String.format("%-5s", "D") +
                 String.format("%-5s", "E") +
-                String.format("%-5s", "GA") +
+                String.format("%-5s", "GP") +
                 String.format("%-5s", "GC") +
                 String.format("%-5s", "DG") +
-                String.format("%-5s", "P");
+                String.format("%-5s", "P") +
+                String.format("%-5s", "%");
     }
 
+    @Override
     public String toString() {
         return String.format("%-20s", this.name) +
                 String.format("%-5d", this.wins) +
@@ -92,5 +103,20 @@ public class FootballTeam {
                 String.format("%-5d", this.goalsAgainst) +
                 String.format("%-5d", this.getGoalDifference()) +
                 String.format("%-5d", this.getPoints());
+    }
+
+    public String toString(int rounds) {
+
+        String winRate = new DecimalFormat("#.##").format(getWinRate(rounds));
+
+        return String.format("%-20s", this.name) +
+                String.format("%-5d", this.wins) +
+                String.format("%-5d", this.losses) +
+                String.format("%-5d", this.ties) +
+                String.format("%-5d", this.goalsFor) +
+                String.format("%-5d", this.goalsAgainst) +
+                String.format("%-5d", this.getGoalDifference()) +
+                String.format("%-5d", this.getPoints()) +
+                String.format("%-5s", String.format("%s%%", winRate));
     }
 }

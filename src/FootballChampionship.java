@@ -1,10 +1,12 @@
+import java.util.Locale;
+
 public class FootballChampionship {
     private FootballTeam[] teams = new FootballTeam[0];
     private int round = 0;
 
     public boolean teamExists(String name) {
         for (FootballTeam team : teams) {
-            if (team.getName().equals(name)) {
+            if (team.getName().equalsIgnoreCase(name)) {
                 return true;
             }
         }
@@ -13,7 +15,7 @@ public class FootballChampionship {
 
     public FootballTeam getTeam(String name) {
         for (FootballTeam team : teams) {
-            if (team.getName().equals(name)) {
+            if (team.getName().equalsIgnoreCase(name)) {
                 return team;
             }
         }
@@ -32,18 +34,18 @@ public class FootballChampionship {
     }
 
     private void addProp(String name, String prop) {
-        for (int i = 0; i < teams.length; i++) {
-            if (teams[i].getName().equals(name)) {
+        for (FootballTeam team : teams) {
+            if (team.getName().equalsIgnoreCase(name)) {
                 if (prop.equals("win")) {
-                    teams[i].addWin();
+                    team.addWin();
                     return;
                 }
                 if (prop.equals("loss")) {
-                    teams[i].addLoss();
+                    team.addLoss();
                     return;
                 }
                 if (prop.equals("tie")) {
-                    teams[i].addTie();
+                    team.addTie();
                     return;
                 }
             }
@@ -52,7 +54,7 @@ public class FootballChampionship {
 
     private void addProp(String name, String prop, int goals) {
         for (int i = 0; i < teams.length; i++) {
-            if (teams[i].getName().equals(name)) {
+            if (teams[i].getName().equalsIgnoreCase(name)) {
                 if (prop.equals("goalsFor")) {
                     teams[i].addGoalsFor(goals);
                     return;
@@ -126,12 +128,12 @@ public class FootballChampionship {
     }
 
     public void printTable() {
-        System.out.printf("===================== Rodada %d =====================\n", round);
+        System.out.printf("========================= Rodada %d =========================\n", round);
         System.out.println(FootballTeam.tableHeader());
         for (FootballTeam team : teams) {
-            System.out.println(team.toString());
+            System.out.println(team.toString(round));
         }
-        System.out.println("====================================================");
+        System.out.println("============================================================");
     }
 
 }

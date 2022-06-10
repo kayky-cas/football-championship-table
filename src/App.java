@@ -1,11 +1,11 @@
 import java.util.Scanner;
 
 public class App {
-    private FootballChampionship championship = new FootballChampionship();
-    private Scanner scanner = new Scanner(System.in);
+    private final FootballChampionship championship = new FootballChampionship();
+    private final Scanner scanner = new Scanner(System.in);
 
     private void generateTeams() {
-        String[] names = {"Flamengo", "Santos", "Palmeiras", "Gremio"};
+        String[] names = {"Flamengo", "Santos", "Palmeiras", "Grêmio"};
 
         for (String name : names) {
             championship.addTeam(name);
@@ -25,7 +25,7 @@ public class App {
         System.out.println("Time adicionado com sucesso!");
     }
 
-    private String readTeam(FootballTeam[] alreadyPlayed, int teamNumber) {
+    private FootballTeam readTeam(FootballTeam[] alreadyPlayed, int teamNumber) {
         while (true) {
             System.out.printf("Time %d: ", teamNumber);
             String name = scanner.nextLine();
@@ -40,10 +40,9 @@ public class App {
                     }
                 }
                 if (!alreadyPlayedCondition) {
-                    return name;
+                    return championship.getTeam(name);
                 }
-            }
-            else {
+            } else {
                 System.out.println("Time não existe!");
             }
         }
@@ -51,41 +50,50 @@ public class App {
 
     private void menuAddRound() {
 
+        if (championship.quantityOfTeams() % 2 != 0) {
+            System.out.println("Roda não pode ser gerada!");
+            System.out.println("Número de times não é par!");
+            return;
+        }
+
         int games = championship.quantityOfTeams() / 2;
 
         FootballTeam[] alreadyPlayed = new FootballTeam[games * 2];
 
         for (int i = 0, j = 0; i < games; i++) {
-            System.out.printf("\n\n%d Jogo\n", i + 1);
+            System.out.printf("\n%d Jogo\n", i + 1);
 
-            String team1 = readTeam(alreadyPlayed, 1);
-            alreadyPlayed[j++] = championship.getTeam(team1);
+            FootballTeam team1 = readTeam(alreadyPlayed, 1);
+            alreadyPlayed[j++] = team1;
 
-            String team2 = readTeam(alreadyPlayed, 2);
-            alreadyPlayed[j++] = championship.getTeam(team2);
+            FootballTeam team2 = readTeam(alreadyPlayed, 2);
+            alreadyPlayed[j++] = team2;
 
-            System.out.printf("%s x %s\n", team1, team2);
+            String nameTeam1 = team1.getName();
+            String nameTeam2 = team2.getName();
 
-            System.out.printf("Gols do %s: ", team1);
+            System.out.printf("%s x %s\n", nameTeam1, nameTeam2);
+
+            System.out.printf("Gols do %s: ", nameTeam1);
             int goals1 = scanner.nextInt();
-            System.out.printf("Gols do %s: ", team2);
+            System.out.printf("Gols do %s: ", nameTeam2);
             int goals2 = scanner.nextInt();
 
             if (goals1 > goals2) {
-                championship.addWin(team1);
-                championship.addWin(team2);
+                championship.addWin(nameTeam1);
+                championship.addLoss(nameTeam2);
             } else if (goals1 < goals2) {
-                championship.addLoss(team1);
-                championship.addWin(team2);
+                championship.addLoss(nameTeam1);
+                championship.addWin(nameTeam2);
             } else {
-                championship.addLoss(team1);
-                championship.addLoss(team2);
+                championship.addTie(nameTeam1);
+                championship.addTie(nameTeam2);
             }
 
-            championship.addGoalsFor(team1, goals1);
-            championship.addGoalsFor(team2, goals2);
-            championship.addGoalsAgainst(team1, goals2);
-            championship.addGoalsAgainst(team2, goals1);
+            championship.addGoalsFor(nameTeam1, goals1);
+            championship.addGoalsFor(nameTeam2, goals2);
+            championship.addGoalsAgainst(nameTeam1, goals2);
+            championship.addGoalsAgainst(nameTeam2, goals1);
 
             scanner.nextLine();
         }
@@ -100,7 +108,7 @@ public class App {
             System.out.println("1- Adicionar time");
             System.out.println("2- Nova rodada");
             System.out.println("3- Exibir tabela");
-            System.out.println("4- Exit");
+            System.out.println("4- Sair");
 
             do {
                 System.out.println("Escolha uma opção:");
@@ -132,7 +140,7 @@ public class App {
         System.out.print("Adicionar os times principais? (S/n): ");
         String option = app.scanner.nextLine();
 
-        if (!option.equals("n")) {
+        if (!option.equalsIgnoreCase("n")) {
             app.generateTeams();
         }
 
