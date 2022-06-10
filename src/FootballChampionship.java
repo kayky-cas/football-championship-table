@@ -1,5 +1,3 @@
-import java.util.Locale;
-
 public class FootballChampionship {
     private FootballTeam[] teams = new FootballTeam[0];
     private int round = 0;
