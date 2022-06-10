@@ -10,7 +10,6 @@ public class FootballTeam {
     private int goalsFor;
     private int goalsAgainst;
 
-
     public FootballTeam(String name) {
         this.name = name;
         this.wins = 0;
@@ -36,7 +35,6 @@ public class FootballTeam {
         return ties;
     }
 
-
     public int getGoalsFor() {
         return goalsFor;
     }
@@ -48,7 +46,6 @@ public class FootballTeam {
     public void addWin() {
         this.wins++;
     }
-
 
     public void addLoss() {
         this.losses++;
@@ -74,7 +71,9 @@ public class FootballTeam {
         return this.goalsFor - this.goalsAgainst;
     }
 
-    public double getWinRate(int rounds) {
+    public double getWinRate() {
+        int rounds = wins + ties + losses;
+
         if (rounds == 0) {
             return 0;
         }
@@ -95,19 +94,7 @@ public class FootballTeam {
 
     @Override
     public String toString() {
-        return String.format("%-20s", this.name) +
-                String.format("%-5d", this.wins) +
-                String.format("%-5d", this.losses) +
-                String.format("%-5d", this.ties) +
-                String.format("%-5d", this.goalsFor) +
-                String.format("%-5d", this.goalsAgainst) +
-                String.format("%-5d", this.getGoalDifference()) +
-                String.format("%-5d", this.getPoints());
-    }
-
-    public String toString(int rounds) {
-
-        String winRate = new DecimalFormat("#.##").format(getWinRate(rounds));
+        String winRate = new DecimalFormat("#.##").format(getWinRate());
 
         return String.format("%-20s", this.name) +
                 String.format("%-5d", this.wins) +

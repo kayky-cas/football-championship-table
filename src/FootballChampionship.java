@@ -131,7 +131,7 @@ public class FootballChampionship {
         System.out.printf("========================= Rodada %d =========================\n", round);
         System.out.println(FootballTeam.tableHeader());
         for (FootballTeam team : teams) {
-            System.out.println(team.toString(round));
+            System.out.println(team);
         }
         System.out.println("============================================================");
     }
